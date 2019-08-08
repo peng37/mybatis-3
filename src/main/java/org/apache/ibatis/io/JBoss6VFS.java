@@ -169,7 +169,7 @@ public class JBoss6VFS extends VFS {
     List<String> names = new ArrayList<>(children.size());
     for (VirtualFile vf : children) {
       names.add(path + vf.getPathNameRelativeTo(directory));
-    }
+    } 
 
     return names;
   }

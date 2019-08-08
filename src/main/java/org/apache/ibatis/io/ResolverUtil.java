@@ -77,6 +77,7 @@ public class ResolverUtil<T> {
   /**
    * A Test that checks to see if each class is assignable to the provided class. Note
    * that this test will match the parent type itself if it is presented for matching.
+   * 指定的类是否继承了指定的父类
    */
   public static class IsA implements Test {
     private Class<?> parent;
@@ -101,6 +102,7 @@ public class ResolverUtil<T> {
   /**
    * A Test that checks to see if each class is annotated with a specific annotation. If it
    * is, then the test returns true, otherwise false.
+   *指定的类是否有指定的注解
    */
   public static class AnnotatedWith implements Test {
     private Class<? extends Annotation> annotation;
