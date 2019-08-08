@@ -17,6 +17,7 @@ package org.apache.ibatis.parsing;
 
 /**
  * @author Clinton Begin
+ * 占位符的解析转换操作
  */
 public class GenericTokenParser {
 

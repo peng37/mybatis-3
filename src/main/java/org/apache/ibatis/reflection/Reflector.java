@@ -42,20 +42,28 @@ import org.apache.ibatis.reflection.property.PropertyNamer;
 /**
  * This class represents a cached set of class definition information that
  * allows for easy mapping between property names and getter/setter methods.
+ * 反射模块的基础
  *
  * @author Clinton Begin
  */
 public class Reflector {
-
+  //对应的class类型
   private final Class<?> type;
+  //／可读属性的名称集合，可读属性就是存在相应 getter 方法的属性，初始值为空数纽
   private final String[] readablePropertyNames;
+  //可写属性的名称集合，可写属性就是存在相应 setter 方法的属性，初始值为空数纽
   private final String[] writablePropertyNames;
+  //记录了属性相应 的 setter 方法 ， key 是属性名称， value 是 Invoker 对象，它是对 setter 方法对应
+  //Method 对象的封装，后面会详细介绍
   private final Map<String, Invoker> setMethods = new HashMap<>();
   private final Map<String, Invoker> getMethods = new HashMap<>();
+  //todo 属性的参数不是多个嘛？
+  //记录了属性相应的 setter 方法的参数值类型， ke y 是属性名称， value 是 setter 方法的参数类型
   private final Map<String, Class<?>> setTypes = new HashMap<>();
+  //记录 了属性相应的 getter 方法的返回位类型， key 是属性名称， value 是 getter 方法的返回位类型
   private final Map<String, Class<?>> getTypes = new HashMap<>();
   private Constructor<?> defaultConstructor;
-
+  //记录了所有属性名 称的 集合
   private Map<String, String> caseInsensitivePropertyMap = new HashMap<>();
 
   public Reflector(Class<?> clazz) {

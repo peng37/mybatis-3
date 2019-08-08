@@ -21,6 +21,8 @@ import org.apache.ibatis.reflection.ReflectionException;
 
 /**
  * @author Clinton Begin
+ * 方法名到属性名的转换以及检测
+ * 比如setXxx 会转换成一个xxx的属性
  */
 public final class PropertyNamer {
 

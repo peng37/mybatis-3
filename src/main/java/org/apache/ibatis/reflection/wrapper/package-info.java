@@ -14,6 +14,8 @@
  *    limitations under the License.
  */
 /**
+ * -- 对对象级别的元信息的处理 --
  * Object wrappers.
+ *
  */
 package org.apache.ibatis.reflection.wrapper;

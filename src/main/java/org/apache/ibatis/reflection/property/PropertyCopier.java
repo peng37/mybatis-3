@@ -21,6 +21,8 @@ import org.apache.ibatis.reflection.Reflector;
 
 /**
  * @author Clinton Begin
+ * 属性拷贝的工具类
+ *
  */
 public final class PropertyCopier {
 

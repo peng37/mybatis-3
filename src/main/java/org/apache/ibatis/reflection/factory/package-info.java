@@ -15,5 +15,6 @@
  */
 /**
  * Object factory.
+ * 反射创建对象工厂
  */
 package org.apache.ibatis.reflection.factory;

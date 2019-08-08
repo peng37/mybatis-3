@@ -31,6 +31,7 @@ public class PropertyParser {
    *   If you specify the {@code true}, you can specify key and default value on placeholder (e.g. {@code ${db.username:postgres}}).
    * </p>
    * @since 3.4.2
+   * 是否开启默认值的分隔符
    */
   public static final String KEY_ENABLE_DEFAULT_VALUE = KEY_PREFIX + "enable-default-value";
 
@@ -42,8 +43,9 @@ public class PropertyParser {
    * @since 3.4.2
    */
   public static final String KEY_DEFAULT_VALUE_SEPARATOR = KEY_PREFIX + "default-value-separator";
-
+  //默认关闭，默认分隔符
   private static final String ENABLE_DEFAULT_VALUE = "false";
+  //默认分隔符是":"
   private static final String DEFAULT_VALUE_SEPARATOR = ":";
 
   private PropertyParser() {

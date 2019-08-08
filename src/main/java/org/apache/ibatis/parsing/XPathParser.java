@@ -48,9 +48,14 @@ public class XPathParser {
   private final Document document;
   private boolean validation;
   private EntityResolver entityResolver;
-  private Properties variables;
+  private Properties variables; //存储配置的变量
   private XPath xpath;
 
+  /**16个构造方法主要提供了各种方法用于从数据源中提供流，String,w文档等的xml数据，并创建XML的Document文档 **/
+  /**
+   * 初始化 Document和XPath
+   * @param xml
+   */
   public XPathParser(String xml) {
     commonConstructor(false, null, null);
     this.document = createDocument(new InputSource(new StringReader(xml)));
@@ -141,6 +146,7 @@ public class XPathParser {
 
   public String evalString(Object root, String expression) {
     String result = (String) evaluate(expression, root, XPathConstants.STRING);
+    //占位符的解析操作
     result = PropertyParser.parse(result, variables);
     return result;
   }
@@ -229,6 +235,7 @@ public class XPathParser {
   private Document createDocument(InputSource inputSource) {
     // important: this must only be called AFTER common constructor
     try {
+      //构建创建XML  Document的工厂
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       factory.setValidating(validation);
 

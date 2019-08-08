@@ -19,27 +19,32 @@ import java.util.Iterator;
 
 /**
  * @author Clinton Begin
+ * <result property=”orders[0].iterns[0].name” column=”iternl” />
+ * 对类中映射中需要解析的表达式进行解析，比如property值的解析
+ *
  */
 public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
-  private String name;
-  private final String indexedName;
-  private String index;
-  private final String children;
+  private String name;//orders
+  private final String indexedName;//orders[0]
+  private String index;//0
+  private final String children;//items[0].name
 
+  //orders[0].items[0].name
   public PropertyTokenizer(String fullname) {
+    //item.id or orders[0].items[0].name
     int delim = fullname.indexOf('.');
     if (delim > -1) {
-      name = fullname.substring(0, delim);
-      children = fullname.substring(delim + 1);
+      name = fullname.substring(0, delim);// orders[0]
+      children = fullname.substring(delim + 1);//items[0].name
     } else {
       name = fullname;
       children = null;
     }
-    indexedName = name;
+    indexedName = name;// orders[0]
     delim = name.indexOf('[');
     if (delim > -1) {
-      index = name.substring(delim + 1, name.length() - 1);
-      name = name.substring(0, delim);
+      index = name.substring(delim + 1, name.length() - 1); // 0
+      name = name.substring(0, delim); //orders
     }
   }
 

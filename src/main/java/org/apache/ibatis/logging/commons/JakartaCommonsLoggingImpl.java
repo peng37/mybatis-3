@@ -21,7 +21,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author Clinton Begin
  */
-public class JakartaCommonsLoggingImpl implements org.apache.ibatis.logging.Log {
+public class   JakartaCommonsLoggingImpl implements org.apache.ibatis.logging.Log {
 
   private final Log log;
 

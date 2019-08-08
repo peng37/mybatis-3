@@ -35,6 +35,7 @@ import org.apache.ibatis.reflection.Reflector;
 
 /**
  * @author Clinton Begin
+ * 对象创建工厂：通过反射实例化对象
  */
 public class DefaultObjectFactory implements ObjectFactory, Serializable {
 

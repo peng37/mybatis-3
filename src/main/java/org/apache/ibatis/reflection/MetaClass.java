@@ -28,6 +28,12 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
 
 /**
  * @author Clinton Begin
+ *  -- 对类级别的元信息的封装和处理 --
+ * 通过Reflector和PropertyTokenizer组合使用实现对复杂属性表达式的解析
+ * 并实现了获取指定属性描述符的功能
+ * 比如：
+ * （1)判断是一个表达式属性是否有getter setter方法
+ * （2）
  */
 public class MetaClass {
 
@@ -131,11 +137,18 @@ public class MetaClass {
     return null;
   }
 
+  /**
+   * 属性表达式所表现的属性，是否有对应的属性
+   * @param name 属性表达式 如 orders[0]id
+   * @return 方法执行结果会判断orders下面的id是否有setter方法
+   */
   public boolean hasSetter(String name) {
     PropertyTokenizer prop = new PropertyTokenizer(name);
     if (prop.hasNext()) {
       if (reflector.hasSetter(prop.getName())) {
+        //如果reflector存在了sertter属性，创建一个该属性对应类型的MetaClass对象
         MetaClass metaProp = metaClassForProperty(prop.getName());
+        //递归执行之类
         return metaProp.hasSetter(prop.getChildren());
       } else {
         return false;

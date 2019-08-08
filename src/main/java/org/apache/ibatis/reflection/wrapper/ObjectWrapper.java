@@ -22,12 +22,15 @@ import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 
 /**
+ * 对对象级别的元信息的处理
  * @author Clinton Begin
  */
 public interface ObjectWrapper {
-
+  //如 ObjectWrapper 中封装的是普通的 Bean 对象 ，则调用相应属性的相应getter方法，
+  // 如采封装的是集合类，则获取指定 key 或下标对应的 value 位
   Object get(PropertyTokenizer prop);
-
+  //如果 ObjectWrapper 中封装的是普通的 Bean 对象 ， 则调用相应属性的相应 setter 方法 ，
+  //如果封装的是集合类，则设置指定 key 或下标对应的 value 值
   void set(PropertyTokenizer prop, Object value);
 
   String findProperty(String name, boolean useCamelCaseMapping);
