@@ -28,6 +28,7 @@ import org.apache.ibatis.session.Configuration;
 
 /**
  * @author Clinton Begin
+ * 录动态SQL语句解析结果的容器。
  */
 public class DynamicContext {
 
@@ -37,8 +38,9 @@ public class DynamicContext {
   static {
     OgnlRuntime.setPropertyAccessor(ContextMap.class, new ContextAccessor());
   }
-
+  //参数上下文,sql中绑定的参数
   private final ContextMap bindings;
+  //sql进行拼接
   private final StringJoiner sqlBuilder = new StringJoiner(" ");
   private int uniqueNumber = 0;
 
@@ -46,6 +48,7 @@ public class DynamicContext {
     if (parameterObject != null && !(parameterObject instanceof Map)) {
       MetaObject metaObject = configuration.newMetaObject(parameterObject);
       boolean existsTypeHandler = configuration.getTypeHandlerRegistry().hasTypeHandler(parameterObject.getClass());
+      //如果parameterObject是一个对象而不是map存储一个，是否有这个对象的TypeHandler处理器
       bindings = new ContextMap(metaObject, existsTypeHandler);
     } else {
       bindings = new ContextMap(null, false);
@@ -74,6 +77,9 @@ public class DynamicContext {
     return uniqueNumber++;
   }
 
+  /**
+   * 参数上下文,sql中绑定的参数
+   */
   static class ContextMap extends HashMap<String, Object> {
     private static final long serialVersionUID = 2977601501966151582L;
     private final MetaObject parameterMetaObject;

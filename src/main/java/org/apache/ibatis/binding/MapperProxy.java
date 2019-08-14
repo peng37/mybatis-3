@@ -53,10 +53,12 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
     } catch (Throwable t) {
       throw ExceptionUtil.unwrapThrowable(t);
     }
+    //封装了Mapper接口中的方法以并且将接口方法对应的xml sql映射配置封装到了里面+configuration
     final MapperMethod mapperMethod = cachedMapperMethod(method);
+    // peng 执行sql调用
     return mapperMethod.execute(sqlSession, args);
   }
-
+  //mybatis缓存相关、缓存每个方法
   private MapperMethod cachedMapperMethod(Method method) {
     return methodCache.computeIfAbsent(method, k -> new MapperMethod(mapperInterface, method, sqlSession.getConfiguration()));
   }

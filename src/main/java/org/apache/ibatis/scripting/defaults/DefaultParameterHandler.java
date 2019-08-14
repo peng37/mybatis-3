@@ -35,6 +35,8 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 /**
  * @author Clinton Begin
  * @author Eduardo Macarron
+ *
+ * 对SQl中的？号占位符进行封装
  */
 public class DefaultParameterHandler implements ParameterHandler {
 

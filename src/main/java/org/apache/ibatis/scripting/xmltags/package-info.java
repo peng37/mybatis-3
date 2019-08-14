@@ -15,5 +15,7 @@
  */
 /**
  * Default XML MyBatis language.
+ *
+ * 用于解析SQL语句
  */
 package org.apache.ibatis.scripting.xmltags;

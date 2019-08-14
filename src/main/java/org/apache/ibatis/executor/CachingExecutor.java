@@ -35,10 +35,14 @@ import org.apache.ibatis.transaction.Transaction;
 /**
  * @author Clinton Begin
  * @author Eduardo Macarron
+ *
+ * 装饰器模式
+ *
  */
 public class CachingExecutor implements Executor {
-
+  //执行数据库操作的 Executor对象
   private final Executor delegate;
+  //二级缓存管理类
   private final TransactionalCacheManager tcm = new TransactionalCacheManager();
 
   public CachingExecutor(Executor delegate) {

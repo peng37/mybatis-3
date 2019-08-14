@@ -115,7 +115,9 @@ public class Configuration {
   protected boolean returnInstanceForEmptyRow;
 
   protected String logPrefix;
+  //自定义的log实现：指定 MyBatis 所用日志的具体实现，未指定时将自动查找。
   protected Class<? extends Log> logImpl;
+  //自动以的vfx实现
   protected Class<? extends VFS> vfsImpl;
   protected LocalCacheScope localCacheScope = LocalCacheScope.SESSION;
   protected JdbcType jdbcTypeForNull = JdbcType.OTHER;
@@ -143,13 +145,13 @@ public class Configuration {
    * @see <a href='https://code.google.com/p/mybatis/issues/detail?id=300'>Issue 300 (google code)</a>
    */
   protected Class<?> configurationFactory;
-
+  //peng 存放所有映射接口
   protected final MapperRegistry mapperRegistry = new MapperRegistry(this);
   protected final InterceptorChain interceptorChain = new InterceptorChain();
   protected final TypeHandlerRegistry typeHandlerRegistry = new TypeHandlerRegistry();
   protected final TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
   protected final LanguageDriverRegistry languageRegistry = new LanguageDriverRegistry();
-
+//peng 存放接口对应的mapper xml文件
   protected final Map<String, MappedStatement> mappedStatements = new StrictMap<MappedStatement>("Mapped Statements collection")
       .conflictMessageProducer((savedValue, targetValue) ->
           ". please check " + savedValue.getResource() + " and " + targetValue.getResource());
@@ -157,7 +159,7 @@ public class Configuration {
   protected final Map<String, ResultMap> resultMaps = new StrictMap<>("Result Maps collection");
   protected final Map<String, ParameterMap> parameterMaps = new StrictMap<>("Parameter Maps collection");
   protected final Map<String, KeyGenerator> keyGenerators = new StrictMap<>("Key Generators collection");
-
+  //记录已经加载的资源
   protected final Set<String> loadedResources = new HashSet<>();
   protected final Map<String, XNode> sqlFragments = new StrictMap<>("XML fragments parsed from previous mappers");
 
@@ -697,7 +699,7 @@ public class Configuration {
   public boolean hasParameterMap(String id) {
     return parameterMaps.containsKey(id);
   }
-
+  //peng xml映射类
   public void addMappedStatement(MappedStatement ms) {
     mappedStatements.put(ms.getId(), ms);
   }
@@ -802,6 +804,7 @@ public class Configuration {
    * Parses all the unprocessed statement nodes in the cache. It is recommended
    * to call this method once all the mappers are added as it provides fail-fast
    * statement validation.
+   * peng
    */
   protected void buildAllStatements() {
     parsePendingResultMaps();

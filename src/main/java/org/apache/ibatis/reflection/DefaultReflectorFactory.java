@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class DefaultReflectorFactory implements ReflectorFactory {
   private boolean classCacheEnabled = true;
+  //缓存了所有需要反射创建的对象。通过Reflector可初始化对象
   private final ConcurrentMap<Class<?>, Reflector> reflectorMap = new ConcurrentHashMap<>();
 
   public DefaultReflectorFactory() {

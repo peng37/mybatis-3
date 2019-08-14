@@ -16,6 +16,8 @@
 package org.apache.ibatis.scripting.xmltags;
 
 /**
+ * 不会处理占位符直接对sql段进行拼接
+ * 非动态SQL拼接
  * @author Clinton Begin
  */
 public class StaticTextSqlNode implements SqlNode {

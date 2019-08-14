@@ -32,6 +32,7 @@ import org.apache.ibatis.executor.BatchResult;
 public interface SqlSession extends Closeable {
 
   /**
+   * 泛型方法，参数表示使用的查询 SQL 语句，返回值为查询的结果对象
    * Retrieve a single row mapped from the statement key.
    * @param <T> the returned object type
    * @param statement
@@ -40,6 +41,7 @@ public interface SqlSession extends Closeable {
   <T> T selectOne(String statement);
 
   /**
+   * 泛型方法，参数表示使用的查询 SQL 语句，返回值为查询的结果对象
    * Retrieve a single row mapped from the statement key and parameter.
    * @param <T> the returned object type
    * @param statement Unique identifier matching the statement to use.
@@ -48,7 +50,9 @@ public interface SqlSession extends Closeable {
    */
   <T> T selectOne(String statement, Object parameter);
 
+  //查询结采集有多条记录 ， 会封装成结果对象列表返回
   /**
+   *
    * Retrieve a list of mapped objects from the statement key and parameter.
    * @param <E> the returned list element type
    * @param statement Unique identifier matching the statement to use.
@@ -65,6 +69,7 @@ public interface SqlSession extends Closeable {
    */
   <E> List<E> selectList(String statement, Object parameter);
 
+  //查询结采集有多条记录 ， 会封装成结果对象列表返回
   /**
    * Retrieve a list of mapped objects from the statement key and parameter,
    * within the specified row bounds.
@@ -76,6 +81,8 @@ public interface SqlSession extends Closeable {
    */
   <E> List<E> selectList(String statement, Object parameter, RowBounds rowBounds);
 
+  //selectMap（）方法的原理和参数都与 selectList （）方法类似，但结果集会被映射成 Map 对象返回 。 其
+  //中第二个参数指定了结采集哪－ f1J作为 Map 的 key ，其他参数不再重复解释
   /**
    * The selectMap is a special case in that it is designed to convert a list
    * of results into a Map based on one of the properties in the resulting
@@ -116,6 +123,8 @@ public interface SqlSession extends Closeable {
    */
   <K, V> Map<K, V> selectMap(String statement, Object parameter, String mapKey, RowBounds rowBounds);
 
+
+  //返回值是游标对象 ， 参数含义与 selectList （）方法相同
   /**
    * A Cursor offers the same results as a List, except it fetches data lazily using an Iterator.
    * @param <T> the returned cursor element type.
@@ -143,6 +152,7 @@ public interface SqlSession extends Closeable {
    */
   <T> Cursor<T> selectCursor(String statement, Object parameter, RowBounds rowBounds);
 
+  //／／查询的结采对象将 由此处指定的 ResultHandler 对象处理，其余参数含义与 selectList （）方法相同
   /**
    * Retrieve a single row mapped from the statement key and parameter
    * using a {@code ResultHandler}.

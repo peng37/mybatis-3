@@ -33,6 +33,10 @@ import org.apache.ibatis.transaction.Transaction;
 
 /**
  * @author Clinton Begin
+ * 执行sql操作
+ * （1）创建statement对象
+ * （2）执行sql操作
+ * （3）解析结果集
  */
 public class SimpleExecutor extends BaseExecutor {
 
@@ -58,6 +62,7 @@ public class SimpleExecutor extends BaseExecutor {
     Statement stmt = null;
     try {
       Configuration configuration = ms.getConfiguration();
+      //创 建 StatementHandler 对象 ，实际返回的是 RoutingStatementHandler 对象，
       StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, resultHandler, boundSql);
       stmt = prepareStatement(handler, ms.getStatementLog());
       return handler.query(stmt, resultHandler);

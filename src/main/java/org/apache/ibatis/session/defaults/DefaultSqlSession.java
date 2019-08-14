@@ -51,7 +51,10 @@ public class DefaultSqlSession implements SqlSession {
   private final Executor executor;
 
   private final boolean autoCommit;
+  //当前缓存中是否有脏数据
   private boolean dirty;
+  //／／ 为防止用户忘记关闭已打开的游标对象，会通过 cursorList 字段记录由该 SqlSession 对象生成的游标
+//／／ 对象，在 DefaultSqlSession.close （）方法中会统一关闭这些游标对象
   private List<Cursor<?>> cursorList;
 
   public DefaultSqlSession(Configuration configuration, Executor executor, boolean autoCommit) {

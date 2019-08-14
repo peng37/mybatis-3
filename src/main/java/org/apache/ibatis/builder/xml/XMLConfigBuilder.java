@@ -49,12 +49,16 @@ import org.apache.ibatis.type.JdbcType;
 /**
  * @author Clinton Begin
  * @author Kazuki Shimizu
+ *
+ * peng构建mybatis 配置文件
  */
 public class XMLConfigBuilder extends BaseBuilder {
-
+//是否已经解析过mybatis-config.xml配置文件
   private boolean parsed;
+  //用于解析 mybatis-config.xml 配置文件的 XPathParser 对象
   private final XPathParser parser;
   private String environment;
+  //用于解析 mybatis - config . xml 配置文件的 XPathParser 对象
   private final ReflectorFactory localReflectorFactory = new DefaultReflectorFactory();
 
   public XMLConfigBuilder(Reader reader) {
@@ -102,20 +106,34 @@ public class XMLConfigBuilder extends BaseBuilder {
   private void parseConfiguration(XNode root) {
     try {
       //issue #117 read properties first
+      //将Properties配置放到configuration中
       propertiesElement(root.evalNode("properties"));
       Properties settings = settingsAsProperties(root.evalNode("settings"));
+      //settings配置中额外对Vfs处理
       loadCustomVfs(settings);
+      //settings配置中额外对log实现处理
       loadCustomLogImpl(settings);
+      //将配置中的类别名信息注册到typeAliasRegistry中
       typeAliasesElement(root.evalNode("typeAliases"));
+      // todo 插件
       pluginElement(root.evalNode("plugins"));
+      // 实例化对象的构造工厂
       objectFactoryElement(root.evalNode("objectFactory"));
+      //todo
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
+      // todo 反射工厂
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
+
+      //settings配置对所有的配置型分别封装到configuration中
       settingsElement(settings);
+
       // read it after objectFactory and objectWrapperFactory issue #631
       environmentsElement(root.evalNode("environments"));
+      //数据库厂商标
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
+      //类型转处理器
       typeHandlerElement(root.evalNode("typeHandlers"));
+      //peng 映射接口
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
@@ -221,6 +239,7 @@ public class XMLConfigBuilder extends BaseBuilder {
   private void propertiesElement(XNode context) throws Exception {
     if (context != null) {
       Properties defaults = context.getChildrenAsProperties();
+      //引用外部配置
       String resource = context.getStringAttribute("resource");
       String url = context.getStringAttribute("url");
       if (resource != null && url != null) {
@@ -236,6 +255,7 @@ public class XMLConfigBuilder extends BaseBuilder {
         defaults.putAll(vars);
       }
       parser.setVariables(defaults);
+      //将Properties配置放到configuration中
       configuration.setVariables(defaults);
     }
   }
@@ -360,6 +380,7 @@ public class XMLConfigBuilder extends BaseBuilder {
   private void mapperElement(XNode parent) throws Exception {
     if (parent != null) {
       for (XNode child : parent.getChildren()) {
+        //配置包路径会加载包下面的所有mapper
         if ("package".equals(child.getName())) {
           String mapperPackage = child.getStringAttribute("name");
           configuration.addMappers(mapperPackage);

@@ -49,6 +49,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
 /**
+ * 解析Mapper*.xml数据
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
@@ -90,9 +91,11 @@ public class XMLMapperBuilder extends BaseBuilder {
   }
 
   public void parse() {
+    //／判断是否已经加载过该映射文件
     if (!configuration.isResourceLoaded(resource)) {
       configurationElement(parser.evalNode("/mapper"));
       configuration.addLoadedResource(resource);
+      //进行mapper与接口的绑定
       bindMapperForNamespace();
     }
 
@@ -107,6 +110,7 @@ public class XMLMapperBuilder extends BaseBuilder {
 
   private void configurationElement(XNode context) {
     try {
+      //namespace 是Mapper所对应的接口
       String namespace = context.getStringAttribute("namespace");
       if (namespace == null || namespace.equals("")) {
         throw new BuilderException("Mapper's namespace cannot be empty");
@@ -417,7 +421,7 @@ public class XMLMapperBuilder extends BaseBuilder {
       }
     }
   }
-
+  //映射文件与接口进行绑定：
   private void bindMapperForNamespace() {
     String namespace = builderAssistant.getCurrentNamespace();
     if (namespace != null) {

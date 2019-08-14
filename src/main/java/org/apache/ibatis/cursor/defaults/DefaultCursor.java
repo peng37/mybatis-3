@@ -122,6 +122,7 @@ public class DefaultCursor<T> implements Cursor<T> {
   }
 
   protected T fetchNextUsingRowBound() {
+    //映射一行数据库记录，得到结采对象
     T result = fetchNextObjectFromDatabase();
     while (result != null && indexWithRowBound < rowBounds.getOffset()) {
       result = fetchNextObjectFromDatabase();

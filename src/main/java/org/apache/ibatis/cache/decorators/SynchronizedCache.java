@@ -19,6 +19,7 @@ import org.apache.ibatis.cache.Cache;
 
 /**
  * @author Clinton Begin
+ * 保证二级缓存的线程安全性
  */
 public class SynchronizedCache implements Cache {
 

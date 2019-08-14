@@ -37,12 +37,16 @@ import org.apache.ibatis.transaction.Transaction;
 
 /**
  * @author Jeff Butler
+ * BatchExecutor 会将连续添加的、相同模式的 SQL 语句添加到同一
+ * 个 Statement/PreparedStatement 对象中 这样可以有效地减少编译操作的次数。
  */
 public class BatchExecutor extends BaseExecutor {
 
   public static final int BATCH_UPDATE_RETURN_VALUE = Integer.MIN_VALUE + 1002;
-
+  //缓存多个 Statement 对象其 中每个 Statement 对象中都缓存了多条 SQL 语句
   private final List<Statement> statementList = new ArrayList<>();
+  //记录批处理的结果， BatchResult 中通过 updateCounts 字段（ int ［］数纽类型）记录每个 Statement
+//／／执行批处理的结果
   private final List<BatchResult> batchResultList = new ArrayList<>();
   private String currentSql;
   private MappedStatement currentStatement;
@@ -74,6 +78,7 @@ public class BatchExecutor extends BaseExecutor {
       statementList.add(stmt);
       batchResultList.add(new BatchResult(ms, sql, parameterObject));
     }
+    //底层通过调用 Statement.addBatch （）方法添加 SQL 语句
     handler.batch(stmt);
     return BATCH_UPDATE_RETURN_VALUE;
   }
@@ -119,6 +124,8 @@ public class BatchExecutor extends BaseExecutor {
         applyTransactionTimeout(stmt);
         BatchResult batchResult = batchResultList.get(i);
         try {
+          //BatchExecutor 会将连续添加的、相同模式的 SQL 语句添加到同一
+          //个 Statement/PreparedStatement 对象中，如图 3-48 所示，这样可以有效地减少编译操作的次数。
           batchResult.setUpdateCounts(stmt.executeBatch());
           MappedStatement ms = batchResult.getMappedStatement();
           List<Object> parameterObjects = batchResult.getParameterObjects();

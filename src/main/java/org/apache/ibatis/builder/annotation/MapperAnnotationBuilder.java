@@ -94,6 +94,7 @@ import org.apache.ibatis.type.UnknownTypeHandler;
 /**
  * @author Clinton Begin
  * @author Kazuki Shimizu
+ * 用于解析映射xml文件
  */
 public class MapperAnnotationBuilder {
 
@@ -160,7 +161,7 @@ public class MapperAnnotationBuilder {
       }
     }
   }
-
+//加载和接口对应的mapper
   private void loadXmlResource() {
     // Spring may not know the real resource name so we check a flag
     // to prevent loading again a resource twice

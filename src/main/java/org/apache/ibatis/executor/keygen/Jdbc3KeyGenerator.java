@@ -44,6 +44,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 /**
  * @author Clinton Begin
  * @author Kazuki Shimizu
+ * Jdbc3KeyGenerator 用于取回数据库生成的自增 id
  */
 public class Jdbc3KeyGenerator implements KeyGenerator {
 
@@ -68,13 +69,16 @@ public class Jdbc3KeyGenerator implements KeyGenerator {
   }
 
   public void processBatch(MappedStatement ms, Statement stmt, Object parameter) {
+   //key的属性集合
     final String[] keyProperties = ms.getKeyProperties();
     if (keyProperties == null || keyProperties.length == 0) {
       return;
     }
+    //获取数据库自动生成的主键，如采没有生成主键，则返回结采集为空
     try (ResultSet rs = stmt.getGeneratedKeys()) {
       final ResultSetMetaData rsmd = rs.getMetaData();
       final Configuration configuration = ms.getConfiguration();
+      //／检测数据库生成的主键的列数与 keyProperties 属性指定的列数是否匹配
       if (rsmd.getColumnCount() < keyProperties.length) {
         // Error?
       } else {
@@ -85,17 +89,21 @@ public class Jdbc3KeyGenerator implements KeyGenerator {
     }
   }
 
+
   @SuppressWarnings("unchecked")
   private void assignKeys(Configuration configuration, ResultSet rs, ResultSetMetaData rsmd, String[] keyProperties,
       Object parameter) throws SQLException {
+    //(1) Map
     if (parameter instanceof ParamMap || parameter instanceof StrictMap) {
       // Multi-param or single param with @Param
       assignKeysToParamMap(configuration, rs, rsmd, keyProperties, (Map<String, ?>) parameter);
     } else if (parameter instanceof ArrayList && !((ArrayList<?>) parameter).isEmpty()
+      //（2）List
         && ((ArrayList<?>) parameter).get(0) instanceof ParamMap) {
       // Multi-param or single param with @Param in batch operation
       assignKeysToParamMapList(configuration, rs, rsmd, keyProperties, ((ArrayList<ParamMap<?>>) parameter));
     } else {
+      //(3)对象类型
       // Single param without @Param
       assignKeysToParam(configuration, rs, rsmd, keyProperties, parameter);
     }

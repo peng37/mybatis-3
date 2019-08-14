@@ -23,6 +23,7 @@ import org.apache.ibatis.scripting.ScriptingException;
 import org.apache.ibatis.type.SimpleTypeRegistry;
 
 /**
+ * 单条sql片段处理,并将sql中的占位符 ${} 转换为具体值
  * @author Clinton Begin
  */
 public class TextSqlNode implements SqlNode {
@@ -37,7 +38,7 @@ public class TextSqlNode implements SqlNode {
     this.text = text;
     this.injectionFilter = injectionFilter;
   }
-
+  // 只要包含${}就认为是动态的
   public boolean isDynamic() {
     DynamicCheckerTokenParser checker = new DynamicCheckerTokenParser();
     GenericTokenParser parser = createParser(checker);
@@ -48,6 +49,7 @@ public class TextSqlNode implements SqlNode {
   @Override
   public boolean apply(DynamicContext context) {
     GenericTokenParser parser = createParser(new BindingTokenParser(context, injectionFilter));
+    //parser.parse(text) 将占位符，替换成binding绑定的真实数据
     context.appendSql(parser.parse(text));
     return true;
   }
@@ -74,6 +76,7 @@ public class TextSqlNode implements SqlNode {
       } else if (SimpleTypeRegistry.isSimpleType(parameter.getClass())) {
         context.getBindings().put("value", parameter);
       }
+      //通过 OGNL 解析 content 的值
       Object value = OgnlCache.getValue(content, context.getBindings());
       String srtValue = value == null ? "" : String.valueOf(value); // issue #274 return "" instead of "null"
       checkInjection(srtValue);

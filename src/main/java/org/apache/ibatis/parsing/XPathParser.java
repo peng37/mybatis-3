@@ -40,19 +40,23 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
+ * 解析XML文件
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
 public class XPathParser {
-
+  //配置文档一个Document 一个xml
   private final Document document;
   private boolean validation;
   private EntityResolver entityResolver;
-  private Properties variables; //存储配置的变量
+  //存储配置的变量
+  private Properties variables;
   private XPath xpath;
 
-  /**16个构造方法主要提供了各种方法用于从数据源中提供流，String,w文档等的xml数据，并创建XML的Document文档 **/
+
   /**
+   * todo by dapeng
+   * 16个构造方法主要提供了各种方法用于从数据源中提供流，String,w文档等的xml数据，并创建XML的Document文档
    * 初始化 Document和XPath
    * @param xml
    */
@@ -144,6 +148,14 @@ public class XPathParser {
     return evalString(document, expression);
   }
 
+  /**
+   * peng 从一个xml配置中动解析标签数据，并将占位符替换为真实数据默认占位符${}
+   * @param root
+   * @param expression XML节点表达式如 resources/nodelet_test.xml
+   *                   /employee/@id 属性
+   *                   /employee/height 值
+   * @return
+   */
   public String evalString(Object root, String expression) {
     String result = (String) evaluate(expression, root, XPathConstants.STRING);
     //占位符的解析操作

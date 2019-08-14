@@ -19,6 +19,11 @@ package org.apache.ibatis.parsing;
  * @author Clinton Begin
  */
 public interface TokenHandler {
+  /**
+   * 将${vakue}内部的value替换成真实数据
+   * @param content
+   * @return
+   */
   String handleToken(String content);
 }
 

@@ -31,6 +31,7 @@ import org.apache.ibatis.reflection.ExceptionUtil;
 
 /**
  * @author Larry Meadors
+ * peng mybatis启动入口
  */
 public class SqlSessionManager implements SqlSessionFactory, SqlSession {
 

@@ -34,7 +34,7 @@ import org.apache.ibatis.session.Configuration;
  * @author Clinton Begin
  */
 public class BoundSql {
-
+//／通过解析得到 BoundSql 对象，，其中封装了包含 ” ？”占位符的 SQL
   private final String sql;
   private final List<ParameterMapping> parameterMappings;
   private final Object parameterObject;

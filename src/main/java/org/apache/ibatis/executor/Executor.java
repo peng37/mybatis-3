@@ -29,11 +29,12 @@ import org.apache.ibatis.transaction.Transaction;
 
 /**
  * @author Clinton Begin
+ * 定义了数据库操作的基本方法
  */
 public interface Executor {
 
   ResultHandler NO_RESULT_HANDLER = null;
-
+//／执行 update 、 insert, delete 三种类型的 SQL 语句
   int update(MappedStatement ms, Object parameter) throws SQLException;
 
   <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql) throws SQLException;
@@ -41,7 +42,7 @@ public interface Executor {
   <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException;
 
   <E> Cursor<E> queryCursor(MappedStatement ms, Object parameter, RowBounds rowBounds) throws SQLException;
-
+//／／批量执行 SQL 语句
   List<BatchResult> flushStatements() throws SQLException;
 
   void commit(boolean required) throws SQLException;
@@ -49,11 +50,11 @@ public interface Executor {
   void rollback(boolean required) throws SQLException;
 
   CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql);
-
+  //I 根据 CacheKey 对象查找缓存
   boolean isCached(MappedStatement ms, CacheKey key);
-
+  //清空一级缓存
   void clearLocalCache();
-
+//／延迟加载一级缓存中的数据， DeferredLoad 的相关内容后面会详细介绍
   void deferLoad(MappedStatement ms, MetaObject resultObject, String property, CacheKey key, Class<?> targetType);
 
   Transaction getTransaction();

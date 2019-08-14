@@ -18,6 +18,8 @@ package org.apache.ibatis.scripting.xmltags;
 import java.util.List;
 
 /**
+ * 将SqlNode集合遍历分别执行node.apply(context)
+ * 最终完成一个完整SQL的转换
  * @author Clinton Begin
  */
 public class MixedSqlNode implements SqlNode {

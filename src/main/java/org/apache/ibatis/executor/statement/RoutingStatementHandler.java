@@ -31,6 +31,7 @@ import org.apache.ibatis.session.RowBounds;
 
 /**
  * @author Clinton Begin
+ * RoutingStatementHandler 会根据 MappedStatement 中 指定的 statementType 宇段，创建对应的 StatementHandler 接口实现
  */
 public class RoutingStatementHandler implements StatementHandler {
 

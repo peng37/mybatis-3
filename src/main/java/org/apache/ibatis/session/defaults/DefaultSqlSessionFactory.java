@@ -86,11 +86,12 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
   public Configuration getConfiguration() {
     return configuration;
   }
-
+  //通过数据源获取数据库连接 ， 并创建 Executor 对象以及 DefaultSqlSession 对象
   private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit) {
     Transaction tx = null;
     try {
       final Environment environment = configuration.getEnvironment();
+      //获取控制事务创建工厂
       final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);
       tx = transactionFactory.newTransaction(environment.getDataSource(), level, autoCommit);
       final Executor executor = configuration.newExecutor(tx, execType);
@@ -102,7 +103,8 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
       ErrorContext.instance().reset();
     }
   }
-
+  //用户提供数据库连接对象 ， DefaultSqlSessionFactory 会使用该数据库连接对
+  //象创建 Executor 对象 以及 DefaultSq!Session 对象
   private SqlSession openSessionFromConnection(ExecutorType execType, Connection connection) {
     try {
       boolean autoCommit;

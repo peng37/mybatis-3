@@ -22,9 +22,10 @@ import org.apache.ibatis.cache.decorators.TransactionalCache;
 
 /**
  * @author Clinton Begin
+ * 二级缓存的管理类
  */
 public class TransactionalCacheManager {
-
+  //二级缓存数据
   private final Map<Cache, TransactionalCache> transactionalCaches = new HashMap<>();
 
   public void clear(Cache cache) {

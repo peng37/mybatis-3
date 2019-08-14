@@ -53,9 +53,10 @@ public abstract class BaseExecutor implements Executor {
 
   protected Transaction transaction;
   protected Executor wrapper;
-
+  //延迟加载队列：如果一级缓存中记录的嵌套查询的结果对象并未完全加载，则可以通过 DeferredLoad 实现类似延迟加载的功能。
   protected ConcurrentLinkedQueue<DeferredLoad> deferredLoads;
   protected PerpetualCache localCache;
+  //一级缓存，用于缓存输出类型的参数
   protected PerpetualCache localOutputParameterCache;
   protected Configuration configuration;
 
@@ -150,6 +151,7 @@ public abstract class BaseExecutor implements Executor {
     try {
       queryStack++;
       list = resultHandler == null ? (List<E>) localCache.getObject(key) : null;
+      //list不为空直接从缓存中返回，不进行数据库查询
       if (list != null) {
         handleLocallyCachedOutputParameters(ms, key, parameter, boundSql);
       } else {
@@ -178,6 +180,7 @@ public abstract class BaseExecutor implements Executor {
     return doQueryCursor(ms, parameter, rowBounds, boundSql);
   }
 
+  //负责创建 DeferredLoad 对象并将其添加到 deferredLoads 集合 中
   @Override
   public void deferLoad(MappedStatement ms, MetaObject resultObject, String property, CacheKey key, Class<?> targetType) {
     if (closed) {
@@ -185,6 +188,7 @@ public abstract class BaseExecutor implements Executor {
     }
     DeferredLoad deferredLoad = new DeferredLoad(resultObject, property, key, localCache, configuration, targetType);
     if (deferredLoad.canLoad()) {
+      //／／一级缓存中已经记录了指定查询的结采对象 ， 直接从缓存中加载对象，并设直到外层对象中
       deferredLoad.load();
     } else {
       deferredLoads.add(new DeferredLoad(resultObject, property, key, localCache, configuration, targetType));
@@ -375,7 +379,7 @@ public abstract class BaseExecutor implements Executor {
     public boolean canLoad() {
       return localCache.getObject(key) != null && localCache.getObject(key) != EXECUTION_PLACEHOLDER;
     }
-
+    //负责从缓存中加载结果对象，并设置到外层对象的相应属性中
     public void load() {
       @SuppressWarnings("unchecked")
       // we suppose we get back a List

@@ -31,6 +31,11 @@ public class GenericTokenParser {
     this.handler = handler;
   }
 
+  /**
+   * 将text 数据进行赋值
+   * @param text
+   * @return
+   */
   public String parse(String text) {
     if (text == null || text.isEmpty()) {
       return "";
@@ -75,6 +80,7 @@ public class GenericTokenParser {
           builder.append(src, start, src.length - start);
           offset = src.length;
         } else {
+          //进行数据映射解析 expression.toString()：占位符的名称如 ${name}  expression.toString() = name
           builder.append(handler.handleToken(expression.toString()));
           offset = end + closeToken.length();
         }

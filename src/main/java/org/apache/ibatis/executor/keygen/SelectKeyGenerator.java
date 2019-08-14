@@ -29,11 +29,14 @@ import org.apache.ibatis.session.RowBounds;
 /**
  * @author Clinton Begin
  * @author Jeff Butler
+ * 用于支持不支持主键自增的数据库进行主键自增操作
  */
 public class SelectKeyGenerator implements KeyGenerator {
 
   public static final String SELECT_KEY_SUFFIX = "!selectKey";
+  //标识 ＜ selectKey＞节点中定义的 SQL 语句是在 insert 吾句之前执行还是之后执行
   private final boolean executeBefore;
+  //insert 吾句中使用的主键
   private final MappedStatement keyStatement;
 
   public SelectKeyGenerator(MappedStatement keyStatement, boolean executeBefore) {
@@ -65,6 +68,7 @@ public class SelectKeyGenerator implements KeyGenerator {
           // Do not close keyExecutor.
           // The transaction will be closed by parent executor.
           Executor keyExecutor = configuration.newExecutor(executor.getTransaction(), ExecutorType.SIMPLE);
+          //执行key查询
           List<Object> values = keyExecutor.query(keyStatement, parameter, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER);
           if (values.size() == 0) {
             throw new ExecutorException("SelectKey returned no data.");

@@ -35,9 +35,11 @@ import org.apache.ibatis.transaction.Transaction;
 
 /**
  * @author Clinton Begin
+ * 重用 Statement 对象是常用的一种优化手段，该优化手段可以减少SQL 预编译的开销以及创建和销毁 Statement 对象的开销，
+ * ReuseExecutor 提供了 Statement 重用的功能，
  */
 public class ReuseExecutor extends BaseExecutor {
-
+  //Statement的缓存
   private final Map<String, Statement> statementMap = new HashMap<>();
 
   public ReuseExecutor(Configuration configuration, Transaction transaction) {

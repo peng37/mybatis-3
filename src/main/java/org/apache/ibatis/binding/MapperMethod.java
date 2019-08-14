@@ -43,11 +43,12 @@ import org.apache.ibatis.session.SqlSession;
  * @author Eduardo Macarron
  * @author Lasse Voss
  * @author Kazuki Shimizu
+ * 封装了Mapper接口中的方法以及对应的SQL语句
  */
 public class MapperMethod {
 
-  private final SqlCommand command;
-  private final MethodSignature method;
+  private final SqlCommand command; // 映射xml文件中的sql先关配置
+  private final MethodSignature method;//接口方法的代理封装
 
   public MapperMethod(Class<?> mapperInterface, Method method, Configuration config) {
     this.command = new SqlCommand(config, mapperInterface, method);
@@ -73,6 +74,7 @@ public class MapperMethod {
         break;
       }
       case SELECT:
+        //执行完成select后需要执行参数传入的 todo handler
         if (method.returnsVoid() && method.hasResultHandler()) {
           executeWithResultHandler(sqlSession, args);
           result = null;
@@ -250,7 +252,7 @@ public class MapperMethod {
     public SqlCommandType getType() {
       return type;
     }
-
+    // todo
     private MappedStatement resolveMappedStatement(Class<?> mapperInterface, String methodName,
         Class<?> declaringClass, Configuration configuration) {
       String statementId = mapperInterface.getName() + "." + methodName;
